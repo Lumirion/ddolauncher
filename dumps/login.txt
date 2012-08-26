@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <LoginAccountResponse xmlns="http://www.turbine.com/SE/GLS">
+      <LoginAccountResult>
+        <Subscriptions>
+          <GameSubscription>
+            <Game>DDO</Game>
+            <Name>LOGINID</Name>
+            <Description>DDODefault FTUIPack Account Creation</Description>
+            <ProductTokens>
+              <string>estore_Content_EveningstarAdventures</string>
+              <string>estore_Content_UnderdarkAdventures</string>
+              <string>estore_Content_DemonwebAdventures</string>
+              <string>estore_Content_EveningstarLandscape</string>
+              <string>estore_Content_UnderdarkLandscape</string>
+              <string>estore_Content_DemonwebLandscape</string>
+              <string>eStore_Feature_EpicDestinies</string>
+              <string>estore_Content_EveningstarChallenges</string>
+              <string>eStore_Feature_Druid</string>
+              <string>eStore_Feature_HalfOrc</string>
+              <string>eStore_Feature_HalfElf</string>
+              <string>eStore_Feature_AccountBank_SlotsUpgrade_3</string>
+              <string>eStore_Feature_AccountBank_SlotsUpgrade_4</string>
+              <string>eStore_Content_Droaam2</string>
+              <string>DDO_MOTU_Bundle</string>
+              <string>eStore_Content_Swamp</string>
+              <string>eStore_Feature_AccountBank_SlotsUpgrade_2</string>
+              <string>FULL</string>
+              <string>TREATED_AS_SUBSCRIBER</string>
+              <string>StormreachGuest</string>
+              <string>F2PDDOUp</string>
+              <string>eStore_Content_Catacombs</string>
+              <string>eStore_Feature_32PtBuild</string>
+              <string>eStore_Content_Dreaming</string>
+              <string>eStore_Feature_FavoredSoul</string>
+              <string>eStore_Content_Shantokor</string>
+              <string>eStore_Content_Inspired</string>
+              <string>eStore_Content_SandsOfMenechtarun</string>
+              <string>eStore_Feature_CharSlot_2</string>
+              <string>eStore_Feature_CharSlot</string>
+              <string>eStore_Feature_CharSlot_4</string>
+              <string>eStore_Content_Deleras</string>
+              <string>eStore_Content_SorrowduskIsles</string>
+              <string>eStore_Feature_Warforged</string>
+              <string>eStore_Content_Necropolis2</string>
+              <string>eStore_Content_Necropolis</string>
+              <string>eStore_Content_GiantholdRuins</string>
+              <string>eStore_Content_ThreeBarrelCove</string>
+              <string>eStore_Feature_CharSlot_7</string>
+              <string>eStore_Feature_HeadStart</string>
+              <string>eStore_Content_Sentinels</string>
+              <string>eStore_Content_TanglerootGorge</string>
+              <string>eStore_Feature_CharSlot_6</string>
+              <string>eStore_Content_ReaversReach</string>
+              <string>eStore_Feature_CharSlot_10</string>
+              <string>eStore_Content_RuinsOfThrenal</string>
+              <string>eStore_Feature_CharSlot_9</string>
+              <string>eStore_Feature_AccountBank_SlotsUpgrade_1</string>
+              <string>eStore_Content_Necropolis4</string>
+              <string>eStore_Feature_CharSlot_3</string>
+              <string>eStore_Content_ValeOfTwilight</string>
+              <string>eStore_Feature_CharSlot_8</string>
+              <string>eStore_Content_DevilAssault</string>
+              <string>eStore_Content_VaultOfNight</string>
+              <string>eStore_Content_Carnival</string>
+              <string>eStore_Feature_AccountBank</string>
+              <string>eStore_Feature_CharSlot_5</string>
+              <string>eStore_Feature_Monk</string>
+              <string>eStore_Content_Shavarath</string>
+              <string>eStore_Content_CrimeWave</string>
+              <string>eStore_Content_Necropolis3</string>
+              <string>eStore_Content_Taken</string>
+              <string>eStore_Content_Xoriat</string>
+              <string>eStore_Content_Blades1</string>
+              <string>eStore_Feature_AccountBank_SharedPlatUpgrade_1</string>
+              <string>eStore_Feature_AccountBank_SharedPlatUpgrade_2</string>
+              <string>eStore_Feature_SharedPlat</string>
+            </ProductTokens>
+            <CustomerServiceTokens />
+            <Status>Expired</Status>
+            <BillingSystemTime>8/26/2012 8:40:32 AM</BillingSystemTime>
+            <AdditionalInfo />
+          </GameSubscription>
+        </Subscriptions>
+        <Ticket>TICKETID</Ticket>
+      </LoginAccountResult>
+    </LoginAccountResponse>
+  </soap:Body>
+</soap:Envelope>

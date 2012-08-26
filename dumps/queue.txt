@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Result>
+  <Command>TakeANumber</Command>
+  <HResult>0x00000000</HResult>
+  <QueueName>E59A45E2-AFCA-4878-982F-9F19457F6482</QueueName>
+  <QueueNumber>0x0000cd4b</QueueNumber>
+  <NowServingNumber>0x0000cd4b</NowServingNumber>
+  <LoginTier>1</LoginTier>
+  <ContextNumber>0x0000425b</ContextNumber>
+</Result>

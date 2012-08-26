@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap:Body>
+    <GetDatacentersResponse xmlns="http://www.turbine.com/SE/GLS">
+      <GetDatacentersResult>
+        <Datacenter>
+          <Name>DDO</Name>
+          <Worlds>
+            <World>
+            <Name>Wayfinder [DE]</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.53:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.53</StatusServerUrl>
+            <Order>0</Order>
+            <Language>DE</Language>
+          </World>
+          <World>
+            <Name>Ghallanda</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.64:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.64</StatusServerUrl>
+            <Order>1</Order>
+            <Language>EN</Language>
+          </World>
+          <World>
+            <Name>Argonnessen</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.56:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.56</StatusServerUrl>
+            <Order>2</Order>
+            <Language>EN</Language>
+            </World>
+          <World>
+            <Name>Thelanis</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.21:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.21</StatusServerUrl>
+            <Order>3</Order>
+            <Language>EN</Language>
+          </World>
+          <World>
+            <Name>Sarlona</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.22:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.22</StatusServerUrl>
+            <Order>4</Order>
+            <Language>EN</Language>
+          </World>
+          <World>
+            <Name>Khyber</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.23:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.23</StatusServerUrl>
+            <Order>5</Order>
+            <Language>EN</Language>
+          </World>
+          <World>
+            <Name>Cannith</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.59:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.59</StatusServerUrl>
+            <Order>6</Order>
+            <Language>EN</Language>
+          </World>
+          <World>
+            <Name>Orien</Name>
+            <LoginServerUrl>(invalid service specified)</LoginServerUrl>
+            <ChatServerUrl>74.201.106.60:2900</ChatServerUrl>
+            <StatusServerUrl>http://gls.ddo.com/GLS.DataCenterServer/StatusServer.aspx?s=10.67.112.60</StatusServerUrl>
+            <Order>7</Order>
+            <Language>EN</Language>
+            </World>
+          </Worlds>
+          <AuthServer>https://gls-auth.ddo.com/GLS.AuthServer/Service.asmx</AuthServer>
+          <PatchServer>patch.ddo.com:80</PatchServer>
+          <LauncherConfigurationServer>http://gls.ddo.com/launcher/ddo/dndlauncher.server.config.xml</LauncherConfigurationServer>
+        </Datacenter>
+        <Datacenter>
+          <Name>DDOBeta</Name>
+          <Worlds />
+          <AuthServer>https://gls-auth.ddo.com/GLS.AuthServer/Service.asmx</AuthServer>
+          <PatchServer>patch.ddo.com:80</PatchServer>
+          <LauncherConfigurationServer>http://gls.ddo.com/launcher/ddobeta/dndlauncher.server.config.xml</LauncherConfigurationServer>
+        </Datacenter>
+      </GetDatacentersResult>
+    </GetDatacentersResponse>
+  </soap:Body>
+</soap:Envelope>
