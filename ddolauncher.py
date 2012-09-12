@@ -69,6 +69,10 @@ def query_host(world):
     
     rdata = r.read().decode("utf-8")
 
+    if len(rdata) is 0:
+        print("The given server appears to be down.")
+        exit(0)
+
     xml = ElementTree.fromstring(rdata)
     loginserver = xml.find("loginservers").text
     loginservers = loginserver.split(';')
@@ -244,7 +248,7 @@ def read_passwords(args, same):
 
     return accounts
 
-def run_ddo(gamedir, username, ticket, language, world):
+def run_ddo(gamedir, username, ticket, language, world, dryrun):
     chdir(gamedir)
     exe = gamedir + "\\dndclient.exe"
     params = ["dndclient.exe",
@@ -260,8 +264,10 @@ def run_ddo(gamedir, username, ticket, language, world):
               "--authserverurl", '"https://gls.ddo.com/GLS.AuthServer/Service.asmx"',
               "--glsticketlifetime", "21600"
               ] 
-           
-    spawnv(P_NOWAIT, exe, params)
+    if not dryrun:
+        spawnv(P_NOWAIT, exe, params)
+    else:
+        print(' '.join(params))
     return
 
 def patch_game(gamedir, patchserver, language, game):
@@ -283,31 +289,35 @@ def main():
         quiet = 0
         patch = 0
         same = 0
+        dryrun = 0
         ddogamedir = "C:\\Program Files (x86)\\Turbine\\DDO Unlimited\\"
 
-        opts, args = getopt(argv[1:], "g:qhs:lpov", 
+        opts, args = getopt(argv[1:], "g:qhs:lpovn", 
                             ["game-path="
                              "quiet", "help", 
                              "server=", "list-servers",
                              "patch", "one-password",
-                             "version"
+                             "version", "dry-run"
                              ]
                            )
         for k, v in opts:
             if k in ("-g", "--game-path"):
                 ddogamedir = v
-            if k in ("-s", "--server"):
+            elif k in ("-s", "--server"):
                 server = v
-            if k in ("-o", "--one-password"):
+            elif k in ("-o", "--one-password"):
                 same = 1
-            if k in ("-p", "--patch"):
+            elif k in ("-p", "--patch"):
                 patch = 1
+            elif k in ("-n", "--dry-run"):
+                dryrun = 1
             elif k in ("-h", "--help"):
                 usage()
             elif k in ("-l", "--list-servers"):
                 listservers = 1
             elif k in ("-v", "--version"):
                 version()
+            
 
         if len(args) is 0:
             print("You must provide at least one account to login with.")
@@ -359,12 +369,15 @@ def main():
             exit(6)
 
         for u, p in accounts.items():
-            try:
-                print("Logging in", u, "to world", w['name'] + "...") 
-                (account, ticket) = login(authserver, w, u, p)
-                run_ddo(ddogamedir, account, ticket, language, w)
-            except RuntimeError as re:
-                print("Login of", u, "failed. Wrong password?")
+            success = 0
+            while not success:
+                try:
+                    print("Logging in", u, "to world", w['name'] + "...") 
+                    (account, ticket) = login(authserver, w, u, p)
+                    run_ddo(ddogamedir, account, ticket, language, w, dryrun)
+                    success = 1
+                except RuntimeError as re:
+                    print("Login of", u, "failed. Wrong password?")
 
     except GetoptError as args:
         print(str(args))
