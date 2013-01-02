@@ -35,7 +35,7 @@
 from http.client import HTTPSConnection, HTTPConnection
 from getopt import getopt, GetoptError
 from sys import exit, argv
-from os import chdir, spawnv, P_NOWAIT
+from os import chdir, spawnv, P_NOWAIT, system
 from os.path import isfile
 from getpass import getpass
 from re import sub
@@ -43,8 +43,19 @@ from urllib.parse import urlparse, quote_plus
 from time import sleep
 import xml.etree.ElementTree as ElementTree
 
+# If we are using wine or not.
+iswine = 0
+
 def get_config_data(basepath):
-    xml = ElementTree.parse(basepath + "\TurbineLauncher.exe.config").getroot()
+    global iswine
+    path = ""
+
+    if iswine:
+        path = basepath + "/TurbineLauncher.exe.config"
+    else:
+        path = basepath + "\\TurbineLauncher.exe.config"
+
+    xml = ElementTree.parse(path).getroot()
     gls = xml.find("appSettings/*[@key='Launcher.DataCenterService.GLS']")
     gamename = xml.find("appSettings/*[@key='DataCenter.GameName']")
     return gls.get("value"), gamename.get("value")
@@ -215,12 +226,13 @@ def usage():
     print("Options:")
     print("  -g --game-path           Full absolute path to were DDO is. Default:")
     print('                           C:\Program Files (x86)\Turbine\DDO Unlimited\ ')
-    print("  -h --help                This bugs.")
+    print("  -h --help                This bogus.")
     print("  -o --one-password        All accounts have the same password.")
     print("  -l --list-servers        List all servers and exit.")
     print("  -p --patch               Runner DDO patcher.")
     print("  -s --server              Specify server to login to, default Ghallanda.")
     print("  -v --version             Print version and author information.")
+    print("  -w --wine                Run wine instead of running natively.")
     exit(0)
 
 def version():
@@ -249,10 +261,10 @@ def read_passwords(args, same):
     return accounts
 
 def run_ddo(gamedir, username, ticket, language, world, dryrun):
+    global iswine
     chdir(gamedir)
-    exe = gamedir + "\\dndclient.exe"
-    params = ["dndclient.exe",
-              "-h", world['host'], 
+
+    params = ["-h", world['host'], 
               "-a", username, 
               "--glsticketdirect", "\"" + ticket + "\"", 
               "--chatserver", world['chat'], 
@@ -264,25 +276,41 @@ def run_ddo(gamedir, username, ticket, language, world, dryrun):
               "--authserverurl", '"https://gls.ddo.com/GLS.AuthServer/Service.asmx"',
               "--glsticketlifetime", "21600"
               ] 
-    if not dryrun:
-        spawnv(P_NOWAIT, exe, params)
+
+    if iswine:
+        exe = "wine dndclient.exe"
     else:
+        exe = gamedir + "\\dndclient.exe"
+        params.insert(0, "dndclient.exe")
+
+    if not dryrun:
+        if iswine:
+            torun = exe + " " + ' '.join(params) + ' &'
+            system(torun)
+        else:
+            spawnv(P_NOWAIT, exe, params)
+    else:
+        print(exe)
         print(' '.join(params))
     return
 
 def patch_game(gamedir, patchserver, language, game):
+    global iswine
     chdir(gamedir)
-    system("rundll32.exe PatchClient.dll,Patch %s --highres --filesonly --language %s --productcode %s"
+    prefix = ""
+    if iswine:
+        prefix = "wine "
+    system(prefix + "rundll32.exe PatchClient.dll,Patch %s --highres --filesonly --language %s --productcode %s"
            % (patchserver, language, game)
            )
-    system("rundll32.exe PatchClient.dll,Patch %s --highres --dataonly --language %s --productcode %s"
+    system(prefix + "rundll32.exe PatchClient.dll,Patch %s --highres --dataonly --language %s --productcode %s"
            % (patchserver, language, game)
            )
     return
 
 def main():
     try:
-      
+        global iswine
         server = "Ghallanda"
         language = "English"
         listservers = 0
@@ -292,12 +320,12 @@ def main():
         dryrun = 0
         ddogamedir = "C:\\Program Files (x86)\\Turbine\\DDO Unlimited\\"
 
-        opts, args = getopt(argv[1:], "g:qhs:lpovn", 
+        opts, args = getopt(argv[1:], "g:qhs:lpovnw", 
                             ["game-path="
                              "quiet", "help", 
                              "server=", "list-servers",
                              "patch", "one-password",
-                             "version", "dry-run"
+                             "version", "dry-run", "wine"
                              ]
                            )
         for k, v in opts:
@@ -317,13 +345,20 @@ def main():
                 listservers = 1
             elif k in ("-v", "--version"):
                 version()
-            
+            elif k in ("-w", "--wine"):
+                iswine = 1
+
 
         if len(args) is 0:
             print("You must provide at least one account to login with.")
             usage()
 
-        if not isfile(ddogamedir + "\\dndclient.exe"):
+        if iswine:
+            exe = ddogamedir + "/dndclient.exe"
+        else:
+            exe = ddogamedir + "\\dndclient.exe"
+
+        if not isfile(exe):
             print('Your DDO game directory "' + ddogamedir + '" does not appear to be right.')
             print("Try specifying your full absolute path to DDO through the -g option.")
             exit(1)
@@ -369,15 +404,12 @@ def main():
             exit(6)
 
         for u, p in accounts.items():
-            success = 0
-            while not success:
-                try:
-                    print("Logging in", u, "to world", w['name'] + "...") 
-                    (account, ticket) = login(authserver, w, u, p)
-                    run_ddo(ddogamedir, account, ticket, language, w, dryrun)
-                    success = 1
-                except RuntimeError as re:
-                    print("Login of", u, "failed. Wrong password?")
+            try:
+                print("Logging in", u, "to world", w['name'] + "...") 
+                (account, ticket) = login(authserver, w, u, p)
+                run_ddo(ddogamedir, account, ticket, language, w, dryrun)
+            except RuntimeError as re:
+                print("Login of", u, "failed. Wrong password?")
 
     except GetoptError as args:
         print(str(args))

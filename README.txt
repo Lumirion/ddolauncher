@@ -19,12 +19,13 @@
  
   -g --game-path           Full absolute path to were DDO is. Default:
                            C:\Program Files (x86)\Turbine\DDO Unlimited\
-  -h --help                This bugs.
+  -h --help                This bogus.
   -o --one-password        All accounts have the same password.
   -l --list-servers        List all servers and exit.
   -p --patch               Runner DDO patcher.
   -s --server              Specify server to login to, default Ghallanda.
   -v --version             Print version and author information. 
+  -w --wine                Use wine.
   
   License:
   
