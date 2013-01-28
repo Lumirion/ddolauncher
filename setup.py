@@ -12,7 +12,7 @@ base = None
 #    base = "Win32GUI"
 
 setup(  name = "ddolauncher",
-        version = "0.1",
+        version = "0.3",
         description = "DDO game launcher",
         options = {"build_exe": build_exe_options},
         executables = [Executable("ddolauncher.py", base=base)])
