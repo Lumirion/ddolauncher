@@ -41,10 +41,27 @@ from getpass import getpass
 from re import sub
 from urllib.parse import urlparse, quote_plus
 from time import sleep
+import socket
+import ssl
 import xml.etree.ElementTree as ElementTree
 
 # If we are using wine or not.
 iswine = 0
+
+# From: http://bugs.python.org/issue11220
+class HTTPSConnectionV3(HTTPSConnection):
+    def __init__(self, *args, **kwargs):
+        HTTPSConnection.__init__(self, *args, **kwargs)
+
+    def connect(self):
+        sock = socket.create_connection((self.host, self.port), self.timeout)
+        if self._tunnel_host:
+            self.sock = sock
+            self._tunnel()
+        try:
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv3)
+        except ssl.SSLError as e:
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv23)
 
 def get_config_data(basepath):
     global iswine
@@ -90,7 +107,7 @@ def query_host(world):
     worldqueue = xml.find("queueurls").text
     worldqueues = worldqueue.split(';')
 
-    world['host'] = loginservers[0]
+    world['host'] = world['login'] = loginservers[1]
     world['queue'] = worldqueues[0]
 
     return world
@@ -140,7 +157,7 @@ def query_worlds(url, gamename):
                    "chat": world.find("ChatServerUrl").text,
                    "language": world.find("Language").text,
                    "status": world.find("StatusServerUrl").text}
-
+            neu = query_host(neu)
             w.append(neu)
 
         return (w, authserver, patchserver, config)
@@ -194,7 +211,7 @@ def login(authserver, world, username, password):
 """ % (username, password)
 
     u = urlparse(authserver)
-    c = HTTPSConnection(u.netloc, 443)
+    c = HTTPSConnectionV3(u.netloc, 443)
     c.putrequest("POST", u.path)
     c.putheader("Content-type: text/xml; charset=utf-8")
     c.putheader("SOAPAction", "http://www.turbine.com/SE/GLS/LoginAccount")
