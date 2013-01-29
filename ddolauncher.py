@@ -107,7 +107,7 @@ def query_host(world):
     worldqueue = xml.find("queueurls").text
     worldqueues = worldqueue.split(';')
 
-    world['host'] = world['login'] = loginservers[1]
+    world['host'] = world['login'] = loginservers[0]
     world['queue'] = worldqueues[0]
 
     return world
@@ -164,13 +164,13 @@ def query_worlds(url, gamename):
     raise RuntimeError("Failed to parse response from login server.")
 
 def join_queue(name, ticket, world):
-    u = urlparse('http://gls.ddo.com/GLS.AuthServer/LoginQueue.aspx')
+    u = urlparse('https://gls.ddo.com/GLS.AuthServer/LoginQueue.aspx')
     params = "command=TakeANumber&subscription=%s&ticket=%s&ticket_type=GLS&queue_url=%s" % (name, quote_plus(ticket), quote_plus(world['queue']))
 
     done = 0
 
     while not done:
-        c = HTTPConnection(u.netloc, 80)
+        c = HTTPSConnectionV3(u.netloc, 443)
         c.putrequest("POST", u.path)
         c.putheader("Content-Length", len(params))
         c.endheaders()
@@ -193,7 +193,7 @@ def join_queue(name, ticket, world):
 
         if number > nowserving:
             print(str(number) + " in queue, now serving: " + str(nowserving))
-            sleep(5)
+            sleep(2)
         else:
             done =  1
 
@@ -283,8 +283,8 @@ def run_ddo(gamedir, username, ticket, language, world, dryrun):
 
     params = ["-h", world['host'], 
               "-a", username, 
-              "--glsticketdirect", "\"" + ticket + "\"", 
-              "--chatserver", world['chat'], 
+              "--glsticketdirect", ticket, 
+              "--chatserver", '"' + world['chat'] + '"', 
               "--language", language,  
               "--rodat", "on",
               "--gametype", "DDO",
