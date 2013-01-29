@@ -47,6 +47,9 @@ import xml.etree.ElementTree as ElementTree
 
 # If we are using wine or not.
 iswine = 0
+# Output for DDO to use. DDO binds to this address so using the same port again
+# will cause DDO to fail.
+outport = 5200
 
 # From: http://bugs.python.org/issue11220
 class HTTPSConnectionV3(HTTPSConnection):
@@ -279,6 +282,7 @@ def read_passwords(args, same):
 
 def run_ddo(gamedir, username, ticket, language, world, dryrun):
     global iswine
+    global outport
     chdir(gamedir)
 
     params = ["-h", world['host'], 
@@ -287,6 +291,7 @@ def run_ddo(gamedir, username, ticket, language, world, dryrun):
               "--chatserver", '"' + world['chat'] + '"', 
               "--language", language,  
               "--rodat", "on",
+              "--outport", str(outport),
               "--gametype", "DDO",
               "--supporturl", '"https://tss.turbine.com/TSSTrowser/trowser.aspx"',
               "--supportserviceurl", '"https://tss.turbine.com/TSSTrowser/SubmitTicket.asmx"',
@@ -306,6 +311,7 @@ def run_ddo(gamedir, username, ticket, language, world, dryrun):
             system(torun)
         else:
             spawnv(P_NOWAIT, exe, params)
+        outport = outport + 1
     else:
         print(exe)
         print(' '.join(params))
