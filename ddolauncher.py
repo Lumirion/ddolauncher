@@ -227,13 +227,14 @@ def login(authserver, world, username, password):
     found_ddo = False
     a = ""
     for game_subs in ticket.findall('Subscriptions/GameSubscription'):
-        for sub_info in game_subs.getchildren():            
+        for sub_info in game_subs.getchildren():
             if sub_info.tag == 'Game' and sub_info.text == 'DDO':
                 found_ddo = True
             if sub_info.tag == 'Name' and found_ddo == True:
                 a = sub_info.text
+                found_ddo = False
 
-    if found_ddo is False or a is "":
+    if a is "":
         print("Unable to find a subscription on your account for DDO. Your LotrO account?")
         exit(2)
                 
