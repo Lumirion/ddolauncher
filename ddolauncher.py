@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-# Copyright (c) 2012, Florian Stinglmayr
-# All rights reserved.
+# Copyright 2012 - 2013 Florian Stinglmayr <fstinglmayr@gmail.com>
+# Copyright        2013 Scott Winburn
 #
 # Redistribution and use in source and binary forms, with or without modification, 
 # are permitted provided that the following conditions are met:
@@ -22,15 +22,6 @@
 # WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 # POSSIBILITY OF SUCH DAMAGE.
-
-# A DDO multi box capable launcher.
-# Author: Florian Stinglmayr 
-# Email: fstinglmayr@gmail.com
-# Licensed under two clause BSD licence, see above.
-#
-# This script is intended for Windows but with minimal effort this could
-# work under Linux as well.
-#
 
 from http.client import HTTPSConnection, HTTPConnection
 from getopt import getopt, GetoptError
@@ -228,13 +219,24 @@ def login(authserver, world, username, password):
 
     rdata = r.read().decode("utf-8")
     rdata = strip_namespaces(rdata)
-
+   
     xml = ElementTree.fromstring(rdata)
     ticket = xml.find('Body/LoginAccountResponse/LoginAccountResult')
-    subscription = ticket.find('Subscriptions/GameSubscription')
     t = ticket.find('Ticket').text
-    a = subscription.find('Name').text
+    
+    found_ddo = False
+    a = ""
+    for game_subs in ticket.findall('Subscriptions/GameSubscription'):
+        for sub_info in game_subs.getchildren():            
+            if sub_info.tag == 'Game' and sub_info.text == 'DDO':
+                found_ddo = True
+            if sub_info.tag == 'Name' and found_ddo == True:
+                a = sub_info.text
 
+    if found_ddo is False or a is "":
+        print("Unable to find a subscription on your account for DDO. Your LotrO account?")
+        exit(2)
+                
     # This runs until we are on!
     join_queue(a, t, world)
 
@@ -444,7 +446,8 @@ def main():
     except KeyboardInterrupt:
         print("Aborting...")
 
-main()
+if __name__ == '__main__':
+    main()
 
 
     
