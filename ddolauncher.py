@@ -40,7 +40,7 @@ import xml.etree.ElementTree as ElementTree
 iswine = 0
 # Output for DDO to use. DDO binds to this address so using the same port again
 # will cause DDO to fail.
-outport = 5200
+outport = 5201
 
 # From: http://bugs.python.org/issue11220
 class HTTPSConnectionV3(HTTPSConnection):
