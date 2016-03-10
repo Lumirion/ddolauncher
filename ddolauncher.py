@@ -53,7 +53,7 @@ class HTTPSConnectionV3(HTTPSConnection):
             self.sock = sock
             self._tunnel()
         try:
-            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv3)
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_TLSv1)
         except ssl.SSLError as e:
             self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv23)
 
@@ -207,7 +207,7 @@ def login(authserver, world, username, password):
     u = urlparse(authserver)
     c = HTTPSConnectionV3(u.netloc, 443)
     c.putrequest("POST", u.path)
-    c.putheader("Content-type: text/xml; charset=utf-8")
+    c.putheader("Content-type", "text/xml; charset=utf-8")
     c.putheader("SOAPAction", "http://www.turbine.com/SE/GLS/LoginAccount")
     c.putheader("Content-Length", str(len(xml)))
     c.endheaders()
