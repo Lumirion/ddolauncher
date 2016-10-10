@@ -22,7 +22,7 @@
   -h --help                This bogus.
   -o --one-password        All accounts have the same password.
   -l --list-servers        List all servers and exit.
-  -p --patch               Runner DDO patcher.
+  -p --patch               Run DDO patcher.
   -s --server              Specify server to login to, default Ghallanda.
   -v --version             Print version and author information. 
   -w --wine                Use wine.
